@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>玩耍 | 項梓淇</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #0ea5e9;
+      --dark: #0f172a;
+      --dark-2: #1e293b;
+      --white: #ffffff;
+      --gray: #94a3b8;
+      --font: 'Noto Sans TC', 'Montserrat', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--dark);
+      color: var(--white);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Navbar ===== */
+    .navbar {
+      position: relative;
+      z-index: 100;
+      background: rgba(15,23,42,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 0;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { font-size: 1.3rem; font-weight: 700; color: var(--white); text-decoration: none; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-link {
+      color: rgba(255,255,255,.7);
+      font-size: .9rem;
+      font-weight: 500;
+      text-decoration: none;
+      position: relative;
+      transition: color .3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width .3s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--white); }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* ===== Canvas area ===== */
+    .canvas-wrap {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ===== HUD ===== */
+    .hud {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(8px);
+      padding: 10px 28px;
+      border-radius: 9999px;
+      font-size: .85rem;
+      color: rgba(255,255,255,.7);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .hud-item { display: flex; align-items: center; gap: 8px; }
+    .hud-item i { color: var(--accent); font-size: .9rem; }
+    .hud-val { color: var(--white); font-weight: 600; font-size: .95rem; min-width: 40px; }
+
+    /* ===== Hint ===== */
+    .hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,.35);
+      font-size: .82rem;
+      pointer-events: none;
+    }
+    .hint kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: var(--font);
+      font-size: .8rem;
+      color: rgba(255,255,255,.6);
+    }
+
+    /* mobile tap btn */
+    .tap-btn {
+      display: none;
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 9999px;
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(37,99,235,.4);
+      transition: transform .1s, box-shadow .1s;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .tap-btn:active {
+      transform: translateX(-50%) scale(.95);
+      box-shadow: 0 4px 12px rgba(37,99,235,.3);
+    }
+
+    @media (max-width: 640px) {
+      .hint { display: none; }
+      .tap-btn { display: block; }
+      .hud { font-size: .75rem; padding: 8px 18px; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">項梓淇</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#home"    class="nav-link">首頁</a></li>
+          <li><a href="index.html#about"   class="nav-link">關於我</a></li>
+          <li><a href="index.html#contact" class="nav-link">聯絡我</a></li>
+          <li><a href="play.html"          class="nav-link active">玩耍</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+    <canvas id="c"></canvas>
+
+    <!-- HUD -->
+    <div class="hud">
+      <div class="hud-item">
+        <i class="fas fa-bolt"></i>
+        <span>能量</span>
+        <span class="hud-val" id="hud-energy">0</span>
+      </div>
+      <div class="hud-item">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>速度</span>
+        <span class="hud-val" id="hud-speed">0.0</span>
+      </div>
+      <div class="hud-item">
+        <i class="fas fa-hand-point-up"></i>
+        <span>連擊</span>
+        <span class="hud-val" id="hud-combo">0</span>
+      </div>
+    </div>
+
+    <!-- Hint (desktop) -->
+    <div class="hint">
+      <i class="fas fa-keyboard"></i>
+      按 <kbd>空格</kbd> 給擺錘能量，按越快擺得越猛！
+    </div>
+
+    <!-- Tap button (mobile) -->
+    <button class="tap-btn" id="tap-btn">
+      <i class="fas fa-hand-point-up"></i> 點擊加速！
+    </button>
+  </div>
+
+  <script>
+  (() => {
+    const canvas = document.getElementById('c');
+    const ctx    = canvas.getContext('2d');
+
+    // ── resize ──────────────────────────────────────────────
+    let W, H, pivotX, pivotY, L;
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+      pivotX = W / 2;
+      pivotY = H * 0.12;
+      L = Math.min(W, H) * 0.42;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ── physics ──────────────────────────────────────────────
+    const GRAVITY  = 0.0028;   // g / L  (angle units)
+    const DAMPING  = 0.9985;   // air friction per frame
+    const PUSH     = 0.09;     // impulse per spacebar press
+    const MAX_VEL  = 0.18;     // cap angular velocity
+
+    let angle    = Math.PI / 8;   // starting angle
+    let velocity = 0;
+    let energy   = 0;
+    let combo    = 0;
+    let lastPress = 0;
+    let flashAlpha = 0;
+    let flashColor = '#3b82f6';
+    let trailPoints = [];
+
+    // HUD elements
+    const hudEnergy = document.getElementById('hud-energy');
+    const hudSpeed  = document.getElementById('hud-speed');
+    const hudCombo  = document.getElementById('hud-combo');
+
+    // ── push logic ───────────────────────────────────────────
+    function push() {
+      const now = performance.now();
+      const dt  = now - lastPress;
+
+      // direction: push in the direction it's swinging
+      // or if nearly still, kick it to the right
+      let dir = velocity >= 0 ? 1 : -1;
+      if (Math.abs(velocity) < 0.005) dir = 1;
+
+      // bonus for rapid pressing (dt < 600ms)
+      const rapidBonus = dt < 600 ? 1 + (600 - dt) / 400 : 1;
+      const impulse = PUSH * rapidBonus;
+
+      velocity += dir * impulse;
+      velocity = Math.max(-MAX_VEL, Math.min(MAX_VEL, velocity));
+
+      // combo
+      if (dt < 800) {
+        combo = Math.min(combo + 1, 99);
+      } else {
+        combo = 1;
+      }
+
+      energy = Math.min(100, Math.round(Math.abs(velocity) / MAX_VEL * 100));
+
+      lastPress  = now;
+      flashAlpha = 1;
+      flashColor = combo >= 10 ? '#f59e0b' : combo >= 5 ? '#a855f7' : '#3b82f6';
+    }
+
+    // keyboard
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') { e.preventDefault(); push(); }
+    });
+
+    // tap button (mobile)
+    document.getElementById('tap-btn').addEventListener('touchstart', e => {
+      e.preventDefault(); push();
+    }, { passive: false });
+    document.getElementById('tap-btn').addEventListener('click', push);
+
+    // ── trail ────────────────────────────────────────────────
+    const TRAIL_LEN = 28;
+
+    // ── draw ─────────────────────────────────────────────────
+    function draw(ts) {
+      requestAnimationFrame(draw);
+
+      // physics step
+      velocity += -GRAVITY * Math.sin(angle);
+      velocity *= DAMPING;
+      angle    += velocity;
+
+      // clamp angle (don't let it go full 360°)
+      angle = Math.max(-Math.PI * 0.92, Math.min(Math.PI * 0.92, angle));
+
+      // bob position
+      const bx = pivotX + Math.sin(angle) * L;
+      const by = pivotY + Math.cos(angle) * L;
+
+      // trail
+      trailPoints.push({ x: bx, y: by, v: Math.abs(velocity) });
+      if (trailPoints.length > TRAIL_LEN) trailPoints.shift();
+
+      // ── clear ──
+      ctx.clearRect(0, 0, W, H);
+
+      // background glow on flash
+      if (flashAlpha > 0) {
+        ctx.save();
+        ctx.globalAlpha = flashAlpha * 0.12;
+        const grd = ctx.createRadialGradient(bx, by, 0, bx, by, L * 0.6);
+        grd.addColorStop(0, flashColor);
+        grd.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, W, W);
+        ctx.restore();
+        flashAlpha *= 0.88;
+      }
+
+      // ── grid lines (subtle) ──
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,.03)';
+      ctx.lineWidth = 1;
+      const step = 60;
+      for (let x = 0; x < W; x += step) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      }
+      for (let y = 0; y < H; y += step) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+      ctx.restore();
+
+      // ── trail ──
+      if (trailPoints.length > 1) {
+        for (let i = 1; i < trailPoints.length; i++) {
+          const t = i / trailPoints.length;
+          const p = trailPoints[i];
+          const pp = trailPoints[i - 1];
+          ctx.save();
+          ctx.globalAlpha = t * 0.6;
+          ctx.strokeStyle = flashColor;
+          ctx.lineWidth   = t * 6 * (p.v / 0.04 + 0.5);
+          ctx.lineCap     = 'round';
+          ctx.beginPath();
+          ctx.moveTo(pp.x, pp.y);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      // ── rope ──
+      const ropeGrd = ctx.createLinearGradient(pivotX, pivotY, bx, by);
+      ropeGrd.addColorStop(0, 'rgba(148,163,184,.6)');
+      ropeGrd.addColorStop(1, 'rgba(148,163,184,.2)');
+      ctx.save();
+      ctx.strokeStyle = ropeGrd;
+      ctx.lineWidth   = 2.5;
+      ctx.lineCap     = 'round';
+      ctx.beginPath();
+      ctx.moveTo(pivotX, pivotY);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
+      ctx.restore();
+
+      // ── pivot mount ──
+      ctx.save();
+      // mount bar
+      ctx.fillStyle = 'rgba(148,163,184,.25)';
+      ctx.beginPath();
+      ctx.roundRect(pivotX - 40, pivotY - 8, 80, 8, 4);
+      ctx.fill();
+      // pivot circle
+      ctx.beginPath();
+      ctx.arc(pivotX, pivotY, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#64748b';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(pivotX, pivotY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fill();
+      ctx.restore();
+
+      // ── bob ──
+      const bobR   = 22 + Math.abs(velocity) * 60;
+      const speed  = Math.abs(velocity);
+      const hue    = combo >= 10 ? 40 : combo >= 5 ? 270 : 220;
+
+      // outer glow
+      const bobGlow = ctx.createRadialGradient(bx, by, 0, bx, by, bobR * 2.2);
+      bobGlow.addColorStop(0, `hsla(${hue},90%,65%,${0.25 + speed * 1.5})`);
+      bobGlow.addColorStop(1, 'transparent');
+      ctx.save();
+      ctx.fillStyle = bobGlow;
+      ctx.beginPath();
+      ctx.arc(bx, by, bobR * 2.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // main bob
+      const bobFill = ctx.createRadialGradient(bx - bobR * 0.3, by - bobR * 0.3, 0, bx, by, bobR);
+      bobFill.addColorStop(0, `hsl(${hue},80%,75%)`);
+      bobFill.addColorStop(1, `hsl(${hue},70%,45%)`);
+      ctx.save();
+      ctx.shadowColor = `hsla(${hue},80%,60%,.7)`;
+      ctx.shadowBlur  = 24 + speed * 80;
+      ctx.beginPath();
+      ctx.arc(bx, by, bobR, 0, Math.PI * 2);
+      ctx.fillStyle = bobFill;
+      ctx.fill();
+      ctx.restore();
+
+      // highlight
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(bx - bobR * 0.3, by - bobR * 0.3, bobR * 0.32, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,.35)';
+      ctx.fill();
+      ctx.restore();
+
+      // ── update HUD ──
+      energy = Math.round(Math.abs(velocity) / MAX_VEL * 100);
+      hudEnergy.textContent = energy;
+      hudSpeed.textContent  = (Math.abs(velocity) * 100).toFixed(1);
+      hudCombo.textContent  = combo;
+
+      // combo color
+      hudCombo.style.color = combo >= 10 ? '#f59e0b' : combo >= 5 ? '#a855f7' : '#ffffff';
+    }
+
+    requestAnimationFrame(draw);
+
+    // ── combo decay ──
+    setInterval(() => {
+      if (performance.now() - lastPress > 1200 && combo > 0) combo = 0;
+    }, 500);
+
+  })();
+  </script>
+</body>
+</html>
