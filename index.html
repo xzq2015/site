@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>項梓淇 | 個人網站</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ===== 導航欄 ===== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">項梓淇</a>
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#home" class="nav-link active">首頁</a></li>
+          <li><a href="#about" class="nav-link">關於我</a></li>
+          <li><a href="#contact" class="nav-link">聯絡我</a></li>
+        </ul>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="選單">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== 首頁 Hero ===== -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-shape shape1"></div>
+      <div class="hero-shape shape2"></div>
+      <div class="hero-shape shape3"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-greeting">你好，我是</p>
+      <h1 class="hero-name">項梓淇</h1>
+      <p class="hero-title">
+        <span class="typed-text" id="typed"></span><span class="cursor">|</span>
+      </p>
+      <p class="hero-tagline">我喜歡畫畫 ✏️</p>
+      <div class="hero-btns">
+        <a href="#about" class="btn btn-primary">了解我</a>
+        <a href="#contact" class="btn btn-outline">聯絡我</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <a href="#about"><i class="fas fa-chevron-down"></i></a>
+    </div>
+  </section>
+
+  <!-- ===== 關於我 ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">About Me</span>
+        <h2 class="section-title">關於我</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="about-grid">
+        <!-- 照片區 -->
+        <div class="about-photo-wrap" data-aos="fade-right">
+          <div class="about-photo-frame">
+            <div class="about-photo-placeholder">
+              <i class="fas fa-user"></i>
+              <p>個人照片</p>
+              <small>替換 profile.jpg</small>
+            </div>
+            <!-- 如有照片請取消下方註解並刪除 placeholder -->
+            <!-- <img src="profile.jpg" alt="項梓淇" class="about-photo" /> -->
+          </div>
+          <div class="about-badge">
+            <i class="fas fa-palette"></i>
+            <span>畫畫愛好者</span>
+          </div>
+        </div>
+
+        <!-- 文字區 -->
+        <div class="about-text" data-aos="fade-left">
+          <h3 class="about-name">嗨，我是項梓淇 👋</h3>
+          <p class="about-role"><i class="fas fa-graduation-cap"></i> 學生</p>
+          <p class="about-desc">
+            我是一名熱愛學習的學生，對藝術創作充滿熱情。
+            繪畫是我表達自我、探索世界的方式，
+            每一筆都承載著我對生活的觀察與感悟。
+          </p>
+
+          <!-- 興趣愛好 -->
+          <div class="hobbies">
+            <h4><i class="fas fa-heart"></i> 興趣愛好</h4>
+            <div class="hobby-tags">
+              <span class="hobby-tag"><i class="fas fa-paint-brush"></i> 繪畫</span>
+              <span class="hobby-tag"><i class="fas fa-pencil-alt"></i> 素描</span>
+              <span class="hobby-tag"><i class="fas fa-palette"></i> 水彩</span>
+              <span class="hobby-tag"><i class="fas fa-book"></i> 閱讀</span>
+              <span class="hobby-tag"><i class="fas fa-music"></i> 音樂</span>
+            </div>
+          </div>
+
+          <!-- 個人資訊卡 -->
+          <div class="info-cards">
+            <div class="info-card">
+              <i class="fas fa-user-graduate"></i>
+              <div>
+                <span class="info-label">身份</span>
+                <span class="info-value">學生</span>
+              </div>
+            </div>
+            <div class="info-card">
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <span class="info-label">所在地</span>
+                <span class="info-value">中國</span>
+              </div>
+            </div>
+            <div class="info-card">
+              <i class="fas fa-language"></i>
+              <div>
+                <span class="info-label">語言</span>
+                <span class="info-value">中文</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 聯絡我 ===== -->
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Contact</span>
+        <h2 class="section-title">聯絡我</h2>
+        <div class="section-divider"></div>
+        <p class="section-desc">歡迎與我交流，無論是關於繪畫還是生活中的點滴 😊</p>
+      </div>
+
+      <div class="contact-wrap">
+        <!-- 微信卡片 -->
+        <div class="contact-card wechat-card" data-aos="fade-up">
+          <div class="contact-card-icon">
+            <i class="fab fa-weixin"></i>
+          </div>
+          <h3>微信</h3>
+          <p>掃描二維碼或搜尋微信號添加我</p>
+          <div class="wechat-qr">
+            <div class="qr-placeholder">
+              <i class="fas fa-qrcode"></i>
+              <p>放置微信二維碼</p>
+              <small>替換 wechat-qr.png</small>
+            </div>
+            <!-- 如有二維碼請取消下方註解 -->
+            <!-- <img src="wechat-qr.png" alt="微信二維碼" /> -->
+          </div>
+          <div class="wechat-id">
+            <i class="fas fa-at"></i>
+            <span>微信號：<strong>請填寫微信號</strong></span>
+          </div>
+        </div>
+
+        <!-- 留言/打招呼 -->
+        <div class="contact-form-wrap" data-aos="fade-up" data-aos-delay="100">
+          <h3><i class="fas fa-paper-plane"></i> 給我留言</h3>
+          <form class="contact-form" id="contact-form">
+            <div class="form-group">
+              <label for="name">你的名字</label>
+              <input type="text" id="name" placeholder="請輸入你的名字" required />
+            </div>
+            <div class="form-group">
+              <label for="message">留言內容</label>
+              <textarea id="message" rows="5" placeholder="想說些什麼呢..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">
+              <i class="fas fa-paper-plane"></i> 發送留言
+            </button>
+          </form>
+          <div class="form-success" id="form-success">
+            <i class="fas fa-check-circle"></i>
+            <p>留言已收到，謝謝你！</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 頁尾 ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p class="footer-name">項梓淇</p>
+        <p class="footer-quote">"用畫筆記錄生活的美好"</p>
+        <p class="footer-copy">© 2026 項梓淇. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
