@@ -239,8 +239,8 @@
 
     // ── physics ──────────────────────────────────────────────
     const GRAVITY  = 0.0032;   // g / L  (angle units)
-    const DAMPING  = 0.994;    // air friction per frame (stronger damping)
-    const PUSH     = 0.018;    // impulse per spacebar press (much smaller)
+    const DAMPING  = 0.992;    // air friction per frame (stronger damping)
+    const PUSH     = 0.006;    // impulse per spacebar press
     const MAX_VEL  = 0.18;     // cap angular velocity
 
     let angle    = Math.PI / 8;   // starting angle
@@ -267,8 +267,8 @@
       let dir = velocity >= 0 ? 1 : -1;
       if (Math.abs(velocity) < 0.005) dir = 1;
 
-      // bonus for rapid pressing (dt < 600ms)
-      const rapidBonus = dt < 600 ? 1 + (600 - dt) / 1200 : 1;
+      // no rapid bonus — every press gives the same small impulse
+      const rapidBonus = 1;
       const impulse = PUSH * rapidBonus;
 
       velocity += dir * impulse;
